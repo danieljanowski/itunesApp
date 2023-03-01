@@ -13,6 +13,7 @@
 		658617CF29AF531900EE18F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 658617CD29AF531900EE18F4 /* Main.storyboard */; };
 		658617D129AF531B00EE18F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 658617D029AF531B00EE18F4 /* Assets.xcassets */; };
 		658617D429AF531B00EE18F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 658617D229AF531B00EE18F4 /* LaunchScreen.storyboard */; };
+		658617DC29AF72F000EE18F4 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617DB29AF72F000EE18F4 /* Tracks.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		658617D029AF531B00EE18F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		658617D329AF531B00EE18F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		658617D529AF531B00EE18F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		658617DB29AF72F000EE18F4 /* Tracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				658617C729AF531900EE18F4 /* AppDelegate.swift */,
 				658617C929AF531900EE18F4 /* SceneDelegate.swift */,
+				658617DB29AF72F000EE18F4 /* Tracks.swift */,
 				658617CB29AF531900EE18F4 /* ViewController.swift */,
 				658617CD29AF531900EE18F4 /* Main.storyboard */,
 				658617D029AF531B00EE18F4 /* Assets.xcassets */,
@@ -141,6 +144,7 @@
 				658617CC29AF531900EE18F4 /* ViewController.swift in Sources */,
 				658617C829AF531900EE18F4 /* AppDelegate.swift in Sources */,
 				658617CA29AF531900EE18F4 /* SceneDelegate.swift in Sources */,
+				658617DC29AF72F000EE18F4 /* Tracks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
