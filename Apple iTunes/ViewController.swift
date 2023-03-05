@@ -10,27 +10,41 @@ import UIKit
 class ViewController: UITableViewController {
     
     var tracks = [Track]()
+    var filteredTracks = [Track]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Search iTunes"
+//        presenter would handle bold etc. and call vc show title.
+        //vc viewLoad
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchiTunes))
         
         searchiTunes()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tracks.count
+        return filteredTracks.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Track", for: indexPath)
-        let track = tracks[indexPath.row]
+        let track = filteredTracks[indexPath.row]
         cell.textLabel?.text = track.artistName
         cell.detailTextLabel?.text = track.trackName
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let detailViewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController else { return }
+        let track = filteredTracks[indexPath.row]
+        
+        // call to coordinator (track)
+        detailViewController.title = track.artistName
+        detailViewController.artistId = track.artistId
+
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
     
     @objc func searchiTunes() {
@@ -46,38 +60,57 @@ class ViewController: UITableViewController {
             
             let searchUrlWithQuery = urlString + searchPhrase.lowercased()
             
-            DispatchQueue.global(qos: .userInitiated).async {
-                let urlComponents = URLComponents(string: searchUrlWithQuery)
-                let request = URLRequest(url: (urlComponents?.url)!)
-                let task = URLSession.shared.dataTask(with: request) {
-                    (data, response, error) -> Void in
-                        if error != nil {
-                            self?.showError(with: error)
-                        }
-
-                    guard let dataToParse = data else { return }
-                    self?.parse(json: dataToParse)
+            //            DispatchQueue.global(qos: .userInitiated).async {
+            //                let urlComponents = URLComponents(string: searchUrlWithQuery)
+            //                let request = URLRequest(url: (urlComponents?.url)!)
+            //                let task = URLSession.shared.dataTask(with: request) {
+            //                    (data, response, error) -> Void in
+            //                        if error != nil {
+            //                            self?.showError(with: error)
+            //                        }
+            //
+            //                    guard let dataToParse = data else { return }
+            //                    self?.parse(json: dataToParse)
+            //                }
+            //                task.resume()
+            //            }
+            
+            APIClient.call(url: searchUrlWithQuery) { (data, response, error) in
+                if let error = error {
+                    self?.showError(with: error)
+                } else if let data = data {
+                    self?.parse(json: data)
                 }
-                task.resume()
             }
         }
-
-        alertController.addTextField()
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alertController.addAction(submitAction)
-        
-        present(alertController, animated: true)
-    }
+            
+            alertController.addTextField()
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            alertController.addAction(submitAction)
+            
+            self.present(alertController, animated: true)
+        }
     
     func parse(json: Data) {
         let decoder = JSONDecoder()
         if let jsonTracks = try? decoder.decode(Tracks.self, from: json)
         {
             tracks = jsonTracks.results
+            filteredTracks = tracks.filter({$0.artistId != nil && $0.trackName != nil})
+            if filteredTracks.isEmpty { showNoResultsNotification() }
             DispatchQueue.main.async {
                 [weak self] in
                 self?.tableView.reloadData()
             }
+        }
+    }
+    
+    func showNoResultsNotification() {
+        DispatchQueue.main.async {
+            [weak self] in
+            let ac = UIAlertController(title: "Search", message: "No results found", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.present(ac, animated: true)
         }
     }
     

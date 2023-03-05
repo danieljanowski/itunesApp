@@ -15,6 +15,8 @@
 		658617D429AF531B00EE18F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 658617D229AF531B00EE18F4 /* LaunchScreen.storyboard */; };
 		658617DC29AF72F000EE18F4 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617DB29AF72F000EE18F4 /* Tracks.swift */; };
 		658617E229AF9DF200EE18F4 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617E129AF9DF200EE18F4 /* DetailViewController.swift */; };
+		658617E429B4D76F00EE18F4 /* Albums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617E329B4D76F00EE18F4 /* Albums.swift */; };
+		658617E629B4D82100EE18F4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617E529B4D82100EE18F4 /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		658617D529AF531B00EE18F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		658617DB29AF72F000EE18F4 /* Tracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracks.swift; sourceTree = "<group>"; };
 		658617E129AF9DF200EE18F4 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		658617E329B4D76F00EE18F4 /* Albums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Albums.swift; sourceTree = "<group>"; };
+		658617E529B4D82100EE18F4 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				658617C729AF531900EE18F4 /* AppDelegate.swift */,
 				658617C929AF531900EE18F4 /* SceneDelegate.swift */,
 				658617DB29AF72F000EE18F4 /* Tracks.swift */,
+				658617E329B4D76F00EE18F4 /* Albums.swift */,
+				658617E529B4D82100EE18F4 /* APIClient.swift */,
 				658617CB29AF531900EE18F4 /* ViewController.swift */,
 				658617E129AF9DF200EE18F4 /* DetailViewController.swift */,
 				658617CD29AF531900EE18F4 /* Main.storyboard */,
@@ -145,8 +151,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				658617CC29AF531900EE18F4 /* ViewController.swift in Sources */,
+				658617E629B4D82100EE18F4 /* APIClient.swift in Sources */,
 				658617C829AF531900EE18F4 /* AppDelegate.swift in Sources */,
 				658617E229AF9DF200EE18F4 /* DetailViewController.swift in Sources */,
+				658617E429B4D76F00EE18F4 /* Albums.swift in Sources */,
 				658617CA29AF531900EE18F4 /* SceneDelegate.swift in Sources */,
 				658617DC29AF72F000EE18F4 /* Tracks.swift in Sources */,
 			);

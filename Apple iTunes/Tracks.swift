@@ -8,10 +8,11 @@
 import Foundation
 
 struct Tracks: Codable {
-    var results: [Track]
+    let results: [Track]
 }
 
 struct Track: Codable {
-    var artistName: String
-    var trackName: String
+    let artistName: String
+    let trackName: String?
+    let artistId: Int?
 }
