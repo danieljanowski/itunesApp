@@ -11,6 +11,7 @@ class ViewController: UITableViewController {
     
     var tracks = [Track]()
     var filteredTracks = [Track]()
+    let worker = Worker()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +50,6 @@ class ViewController: UITableViewController {
     
     @objc func searchiTunes() {
         
-        let urlString = "https://itunes.apple.com/search?term="
-        
         let alertController = UIAlertController(title: "Search", message: "Search iTunes tracks by author", preferredStyle: .alert)
         
         let submitAction = UIAlertAction(title: "OK", style: .default) {
@@ -58,24 +57,7 @@ class ViewController: UITableViewController {
             guard var searchPhrase = alertController.textFields?[0].text else { return }
             searchPhrase.replace(" ", with: "+")
             
-            let searchUrlWithQuery = urlString + searchPhrase.lowercased()
-            
-            //            DispatchQueue.global(qos: .userInitiated).async {
-            //                let urlComponents = URLComponents(string: searchUrlWithQuery)
-            //                let request = URLRequest(url: (urlComponents?.url)!)
-            //                let task = URLSession.shared.dataTask(with: request) {
-            //                    (data, response, error) -> Void in
-            //                        if error != nil {
-            //                            self?.showError(with: error)
-            //                        }
-            //
-            //                    guard let dataToParse = data else { return }
-            //                    self?.parse(json: dataToParse)
-            //                }
-            //                task.resume()
-            //            }
-            
-            APIClient.call(url: searchUrlWithQuery) { (data, response, error) in
+            self?.worker.searchiTunes(searchPhrase: searchPhrase) { (data, response, error) in
                 if let error = error {
                     self?.showError(with: error)
                 } else if let data = data {
