@@ -11,9 +11,8 @@ class ViewController: UITableViewController {
     
     var tracks = [Track]()
     var filteredTracks = [Track]()
-    let worker = Worker()
-    let interactor = MainInteractor()
-
+    var interactor: MainInteractor?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,6 +22,27 @@ class ViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchiTunes))
         
         searchiTunes()
+    }
+    
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//        setup()
+//    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    private func setup() {
+        let viewController = self
+        let interactor = MainInteractor()
+        let presenter = MainPresenter()
+        let worker = Worker()
+        viewController.interactor = interactor
+        interactor.presenter = presenter
+        interactor.worker = worker
+        presenter.viewController = viewController
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -58,7 +78,7 @@ class ViewController: UITableViewController {
             guard var searchPhrase = alertController.textFields?[0].text else { return }
             searchPhrase.replace(" ", with: "+")
             
-            self?.interactor.searchiTunes(searchPhrase: searchPhrase)
+            self?.interactor?.searchiTunes(searchPhrase: searchPhrase)
             
 //            self?.worker.searc.hiTunes(searchPhrase: searchPhrase) { (data, response, error) in
 //                if let error = error {
