@@ -12,6 +12,7 @@ class ViewController: UITableViewController {
     var tracks = [Track]()
     var filteredTracks = [Track]()
     let worker = Worker()
+    let interactor = MainInteractor()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,13 +58,15 @@ class ViewController: UITableViewController {
             guard var searchPhrase = alertController.textFields?[0].text else { return }
             searchPhrase.replace(" ", with: "+")
             
-            self?.worker.searchiTunes(searchPhrase: searchPhrase) { (data, response, error) in
-                if let error = error {
-                    self?.showError(with: error)
-                } else if let data = data {
-                    self?.parse(json: data)
-                }
-            }
+            self?.interactor.searchiTunes(searchPhrase: searchPhrase)
+            
+//            self?.worker.searc.hiTunes(searchPhrase: searchPhrase) { (data, response, error) in
+//                if let error = error {
+//                    self?.showError(with: error)
+//                } else if let data = data {
+//                    self?.parse(json: data)
+//                }
+//            }
         }
             
             alertController.addTextField()
@@ -73,17 +76,25 @@ class ViewController: UITableViewController {
             self.present(alertController, animated: true)
         }
     
-    func parse(json: Data) {
-        let decoder = JSONDecoder()
-        if let jsonTracks = try? decoder.decode(Tracks.self, from: json)
-        {
-            tracks = jsonTracks.results
-            filteredTracks = tracks.filter({$0.artistId != nil && $0.trackName != nil})
-            if filteredTracks.isEmpty { showNoResultsNotification() }
-            DispatchQueue.main.async {
-                [weak self] in
-                self?.tableView.reloadData()
-            }
+//    func parse(json: Data) {
+//        let decoder = JSONDecoder()
+//        if let jsonTracks = try? decoder.decode(Tracks.self, from: json)
+//        {
+//            tracks = jsonTracks.results
+//            filteredTracks = tracks.filter({$0.artistId != nil && $0.trackName != nil})
+//            if filteredTracks.isEmpty { showNoResultsNotification() }
+//            DispatchQueue.main.async {
+//                [weak self] in
+//                self?.tableView.reloadData()
+//            }
+//        }
+//    }
+    
+    func reloadTableData(filteredTracksData: [Track]) {
+        filteredTracks = filteredTracksData
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.tableView.reloadData()
         }
     }
     
