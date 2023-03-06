@@ -12,6 +12,7 @@ class ViewController: UITableViewController {
     var tracks = [Track]()
     var filteredTracks = [Track]()
     var interactor: MainInteractor?
+    var coordinator: AppCoordinator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,10 +25,10 @@ class ViewController: UITableViewController {
         searchiTunes()
     }
     
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//        setup()
-//    }
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
+    }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -39,10 +40,13 @@ class ViewController: UITableViewController {
         let interactor = MainInteractor()
         let presenter = MainPresenter()
         let worker = Worker()
+        let coordinator = AppCoordinator()
         viewController.interactor = interactor
+        viewController.coordinator = coordinator
         interactor.presenter = presenter
         interactor.worker = worker
         presenter.viewController = viewController
+        coordinator.viewController = viewController
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -59,14 +63,8 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let detailViewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController else { return }
         let track = filteredTracks[indexPath.row]
-        
-        // call to coordinator (track)
-        detailViewController.title = track.artistName
-        detailViewController.artistId = track.artistId
-
-        navigationController?.pushViewController(detailViewController, animated: true)
+        coordinator?.showAlbumsForArtistFrom(track: track)
     }
     
     @objc func searchiTunes() {
@@ -79,14 +77,6 @@ class ViewController: UITableViewController {
             searchPhrase.replace(" ", with: "+")
             
             self?.interactor?.searchiTunes(searchPhrase: searchPhrase)
-            
-//            self?.worker.searc.hiTunes(searchPhrase: searchPhrase) { (data, response, error) in
-//                if let error = error {
-//                    self?.showError(with: error)
-//                } else if let data = data {
-//                    self?.parse(json: data)
-//                }
-//            }
         }
             
             alertController.addTextField()
@@ -95,20 +85,6 @@ class ViewController: UITableViewController {
             
             self.present(alertController, animated: true)
         }
-    
-//    func parse(json: Data) {
-//        let decoder = JSONDecoder()
-//        if let jsonTracks = try? decoder.decode(Tracks.self, from: json)
-//        {
-//            tracks = jsonTracks.results
-//            filteredTracks = tracks.filter({$0.artistId != nil && $0.trackName != nil})
-//            if filteredTracks.isEmpty { showNoResultsNotification() }
-//            DispatchQueue.main.async {
-//                [weak self] in
-//                self?.tableView.reloadData()
-//            }
-//        }
-//    }
     
     func reloadTableData(filteredTracksData: [Track]) {
         filteredTracks = filteredTracksData

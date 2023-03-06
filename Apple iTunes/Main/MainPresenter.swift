@@ -16,7 +16,6 @@ class MainPresenter {
     }
     
     func reloadTableData(filteredTracks: [Track]) {
-//        viewController.filteredTracks = filteredTracks
         viewController?.reloadTableData(filteredTracksData: filteredTracks)
     }
 }
