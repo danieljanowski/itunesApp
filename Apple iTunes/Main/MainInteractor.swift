@@ -7,18 +7,20 @@
 
 import Foundation
 
-class MainInteractor {
+protocol MainInteractorLogic {
+    func searchiTunes(searchPhrase: String)
+    func parse(json: Data)
+}
+
+class MainInteractor: MainInteractorLogic {
     
     var worker: Worker?
     var presenter: MainPresenter?
-//    var worker: Worker?
-//    var presenter: MainPresenter?
     
     func searchiTunes(searchPhrase: String) {
         worker?.searchiTunes(searchPhrase: searchPhrase) { (data, response, error) in
             if let error = error {
-                print(error)
-//                self?.showError(with: error)
+                self.presenter?.showErrorNotification(with: error)
             } else if let data = data {
                 self.parse(json: data)
             }

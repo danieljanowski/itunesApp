@@ -7,7 +7,13 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+protocol ViewControllerLogic {
+    func searchiTunes()
+    func reloadTableData(filteredTracksData: [Track])
+    func showNotification(title: String, message: String, actionTitle: String)
+}
+
+class ViewController: UITableViewController, ViewControllerLogic {
     
     var tracks = [Track]()
     var filteredTracks = [Track]()
@@ -18,8 +24,6 @@ class ViewController: UITableViewController {
         super.viewDidLoad()
         
         title = "Search iTunes"
-//        presenter would handle bold etc. and call vc show title.
-        //vc viewLoad
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchiTunes))
         
         searchiTunes()
@@ -94,20 +98,11 @@ class ViewController: UITableViewController {
         }
     }
     
-    func showNoResultsNotification() {
+    func showNotification(title: String, message: String, actionTitle: String) {
         DispatchQueue.main.async {
             [weak self] in
-            let ac = UIAlertController(title: "Search", message: "No results found", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(ac, animated: true)
-        }
-    }
-    
-    func showError(with error : Error?) {
-        DispatchQueue.main.async {
-            [weak self] in
-            let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed. \(error?.localizedDescription ?? "")", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: actionTitle, style: .default))
             self?.present(ac, animated: true)
         }
     }

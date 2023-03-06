@@ -8,7 +8,11 @@
 import Foundation
 import UIKit
 
-class AppCoordinator {
+protocol AppCoordinatorLogic {
+    func showAlbumsForArtistFrom(track: Track)
+}
+
+class AppCoordinator: AppCoordinatorLogic {
     var viewController : ViewController?
     
     func showAlbumsForArtistFrom(track: Track) {
@@ -17,7 +21,7 @@ class AppCoordinator {
         
         detailViewController.title = track.artistName
         detailViewController.artistId = track.artistId
-
+        
 //        viewController?.show(detailViewController, sender: nil)
         viewController?.navigationController?.pushViewController(detailViewController, animated: true)
     }
