@@ -9,7 +9,7 @@ import Foundation
 
 class APIClient {
     
-    static func call(url: String, completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> Void {
+    func call(url: String, completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> Void {
         let urlComponents = URLComponents(string: url)
         let request = URLRequest(url: (urlComponents?.url)!)
         

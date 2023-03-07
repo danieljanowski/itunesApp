@@ -7,20 +7,50 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+protocol ViewControllerLogic {
+    func searchiTunes()
+    func reloadTableData(filteredTracksData: [Track])
+    func showNotification(title: String, message: String, actionTitle: String)
+}
+
+class ViewController: UITableViewController, ViewControllerLogic {
     
     var tracks = [Track]()
     var filteredTracks = [Track]()
-
+    var interactor: MainInteractor?
+    var coordinator: AppCoordinator?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Search iTunes"
-//        presenter would handle bold etc. and call vc show title.
-        //vc viewLoad
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchiTunes))
         
         searchiTunes()
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    private func setup() {
+        let viewController = self
+        let interactor = MainInteractor()
+        let presenter = MainPresenter()
+        let worker = Worker()
+        let coordinator = AppCoordinator()
+        viewController.interactor = interactor
+        viewController.coordinator = coordinator
+        interactor.presenter = presenter
+        interactor.worker = worker
+        presenter.viewController = viewController
+        coordinator.viewController = viewController
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,19 +67,11 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let detailViewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController else { return }
         let track = filteredTracks[indexPath.row]
-        
-        // call to coordinator (track)
-        detailViewController.title = track.artistName
-        detailViewController.artistId = track.artistId
-
-        navigationController?.pushViewController(detailViewController, animated: true)
+        coordinator?.showAlbumsForArtistFrom(track: track)
     }
     
     @objc func searchiTunes() {
-        
-        let urlString = "https://itunes.apple.com/search?term="
         
         let alertController = UIAlertController(title: "Search", message: "Search iTunes tracks by author", preferredStyle: .alert)
         
@@ -58,30 +80,7 @@ class ViewController: UITableViewController {
             guard var searchPhrase = alertController.textFields?[0].text else { return }
             searchPhrase.replace(" ", with: "+")
             
-            let searchUrlWithQuery = urlString + searchPhrase.lowercased()
-            
-            //            DispatchQueue.global(qos: .userInitiated).async {
-            //                let urlComponents = URLComponents(string: searchUrlWithQuery)
-            //                let request = URLRequest(url: (urlComponents?.url)!)
-            //                let task = URLSession.shared.dataTask(with: request) {
-            //                    (data, response, error) -> Void in
-            //                        if error != nil {
-            //                            self?.showError(with: error)
-            //                        }
-            //
-            //                    guard let dataToParse = data else { return }
-            //                    self?.parse(json: dataToParse)
-            //                }
-            //                task.resume()
-            //            }
-            
-            APIClient.call(url: searchUrlWithQuery) { (data, response, error) in
-                if let error = error {
-                    self?.showError(with: error)
-                } else if let data = data {
-                    self?.parse(json: data)
-                }
-            }
+            self?.interactor?.searchiTunes(searchPhrase: searchPhrase)
         }
             
             alertController.addTextField()
@@ -91,34 +90,19 @@ class ViewController: UITableViewController {
             self.present(alertController, animated: true)
         }
     
-    func parse(json: Data) {
-        let decoder = JSONDecoder()
-        if let jsonTracks = try? decoder.decode(Tracks.self, from: json)
-        {
-            tracks = jsonTracks.results
-            filteredTracks = tracks.filter({$0.artistId != nil && $0.trackName != nil})
-            if filteredTracks.isEmpty { showNoResultsNotification() }
-            DispatchQueue.main.async {
-                [weak self] in
-                self?.tableView.reloadData()
-            }
+    func reloadTableData(filteredTracksData: [Track]) {
+        filteredTracks = filteredTracksData
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.tableView.reloadData()
         }
     }
     
-    func showNoResultsNotification() {
+    func showNotification(title: String, message: String, actionTitle: String) {
         DispatchQueue.main.async {
             [weak self] in
-            let ac = UIAlertController(title: "Search", message: "No results found", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(ac, animated: true)
-        }
-    }
-    
-    func showError(with error : Error?) {
-        DispatchQueue.main.async {
-            [weak self] in
-            let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed. \(error?.localizedDescription ?? "")", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: actionTitle, style: .default))
             self?.present(ac, animated: true)
         }
     }

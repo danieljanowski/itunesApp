@@ -12,6 +12,8 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var tableView: UITableView!
     
+    let apiClient = APIClient()
+    
     var albums = [Album]()
     var artistId: Int?
     
@@ -47,7 +49,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         guard let artistIdUnwrapped = artistId else { return }
         let urlString = "https://itunes.apple.com/lookup?id=\(artistIdUnwrapped)&entity=album"
         
-        APIClient.call(url: urlString) { (data, response, error) in
+        apiClient.call(url: urlString) { (data, response, error) in
                     if error != nil {
                         self.showError(with: error)
                     }
@@ -82,7 +84,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadAlbumArt(urlString: String){
-        APIClient.call(url: urlString) { (data, response, error) in
+        apiClient.call(url: urlString) { (data, response, error) in
                 if error != nil {
                     self.showError(with: error)
                 }
