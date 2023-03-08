@@ -13,16 +13,47 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet var tableView: UITableView!
     
     let apiClient = APIClient()
+    var interactor: DetailIntercator?
     
     var albums = [Album]()
     var artistId: Int?
+    
+    init?(coder: NSCoder, interactor: DetailIntercator, presenter: DetailPresenter, worker: Worker) {
+        super.init(coder: coder)
+        self.interactor = interactor
+        interactor.presenter = presenter
+        interactor.worker = worker
+        presenter.viewController = self
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+//        setup()
+    }
+    
+    //TODO: replace setup with dependency injection
+//    func setup() {
+//        let viewController = self
+//        let interactor = DetailIntercator()
+//        let presenter = DetailPresenter()
+//        let worker = Worker()
+////        let coordinator = AppCoordinator()
+//        viewController.interactor = interactor
+////        viewController.coordinator = coordinator
+//        interactor.presenter = presenter
+//        interactor.worker = worker
+//        presenter.viewController = viewController
+////        coordinator.viewController = viewController
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         
-        loadAlbums()
+        guard let unwrappedArtistId = artistId else { return }
+        interactor?.loadAlbums(artistId: unwrappedArtistId)
+//        loadAlbums()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -40,69 +71,18 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let urlString = albums[indexPath.row].artworkUrl100 else { return }
-        loadAlbumArt(urlString: urlString)
+        interactor?.loadAlbumArt(urlString: urlString)
+        
         //interactor (user input) fetches API (worker)->presenter (filters na converts to model and tells viewc to present)->viewcontroller presnts and refreshes tableview
         //3 protocols
     }
     
-    func loadAlbums() {
-        guard let artistIdUnwrapped = artistId else { return }
-        let urlString = "https://itunes.apple.com/lookup?id=\(artistIdUnwrapped)&entity=album"
-        
-        apiClient.call(url: urlString) { (data, response, error) in
-                    if error != nil {
-                        self.showError(with: error)
-                    }
-                guard let dataToParse = data else { return }
-                self.parse(json: dataToParse)
-                if !self.albums.isEmpty {
-                    guard let unwrappedUrl = self.albums[0].artworkUrl100 else { return } //presenter
-                    self.loadAlbumArt(urlString: unwrappedUrl) }
-            }
-    }
-    
-    func parse(json: Data) {
-        let decoder = JSONDecoder()
-        if let jsonTracks = try? decoder.decode(Albums.self, from: json)
-        {
-            albums = jsonTracks.results.filter({$0.collectionName != nil && $0.artworkUrl100 != nil})
-            if albums.isEmpty { showNoResultsNotification() }
-            DispatchQueue.main.async {
-                [weak self] in
-                self?.tableView.reloadData()
-            }
-        }
-    }
-    
-    func showNoResultsNotification() {
+    func showImageData(data: Data){
         DispatchQueue.main.async {
             [weak self] in
-            let ac = UIAlertController(title: "Search", message: "No albums found for this artist", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(ac, animated: true)
+            self?.imageView.image = UIImage(data: data)
         }
     }
-    
-    func loadAlbumArt(urlString: String){
-        apiClient.call(url: urlString) { (data, response, error) in
-                if error != nil {
-                    self.showError(with: error)
-                }
-
-            guard let dataToParse = data else { return }
-            DispatchQueue.main.async {
-                [weak self] in
-                self?.imageView.image = UIImage(data: dataToParse)
-            }
-        }
-    }
-    
-    //private method for API call
-    //3 public methods for call and parse
-    
-    //interactor call API
-    //coordinator would have showError. - also Router
-    
     
     func showError(with error : Error?) {
         DispatchQueue.main.async {
@@ -110,6 +90,23 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed. \(error?.localizedDescription ?? "")", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             self?.present(ac, animated: true)
+        }
+    }
+    
+    func showNotification(title: String, message: String, actionTitle: String) {
+        DispatchQueue.main.async {
+            [weak self] in
+            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: actionTitle, style: .default))
+            self?.present(ac, animated: true)
+        }
+    }
+    
+    func reloadTableData(filteredAlbumsData: [Album]) {
+        albums = filteredAlbumsData
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.tableView.reloadData()
         }
     }
 

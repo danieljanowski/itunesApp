@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "5282671A-2240-4CC6-B4E6-FE26F5B61D7C"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "36A24E05-3FB4-48F3-B519-507EF7FB6C3A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Apple iTunes/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "searchiTunes()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B43ECE8F-CC1F-46E7-9F2D-4D6C85987026"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Apple iTunes/AppDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "application(_:configurationForConnecting:options:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "990FA41D-186B-4177-9D7D-A54E55EDF325"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Apple iTunes/AppDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "application(_:configurationForConnecting:options:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "990FA41D-186B-4177-9D7D-A54E55EDF325 - 171f136faeba8daa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Apple_iTunes.AppDelegate.application(_: __C.UIApplication, configurationForConnecting: __C.UISceneSession, options: __C.UISceneConnectionOptions) -&gt; __C.UISceneConfiguration"
+                  moduleName = "Apple iTunes"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniel/Coding/Swift/Apple%20iTunes/Apple%20iTunes/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "197">
+               </Location>
+               <Location
+                  uuid = "990FA41D-186B-4177-9D7D-A54E55EDF325 - 171f136faeba8daa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Apple_iTunes.AppDelegate.application(_: __C.UIApplication, configurationForConnecting: __C.UISceneSession, options: __C.UISceneConnectionOptions) -&gt; __C.UISceneConfiguration"
+                  moduleName = "Apple iTunes"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniel/Coding/Swift/Apple%20iTunes/Apple%20iTunes/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "496">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6505A03129B7544300D156BA /* DetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6505A03029B7544300D156BA /* DetailInteractor.swift */; };
+		6505A03329B7545600D156BA /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6505A03229B7545600D156BA /* DetailPresenter.swift */; };
 		658617C829AF531900EE18F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617C729AF531900EE18F4 /* AppDelegate.swift */; };
 		658617CA29AF531900EE18F4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617C929AF531900EE18F4 /* SceneDelegate.swift */; };
 		658617CC29AF531900EE18F4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658617CB29AF531900EE18F4 /* ViewController.swift */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6505A03029B7544300D156BA /* DetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInteractor.swift; sourceTree = "<group>"; };
+		6505A03229B7545600D156BA /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
 		658617C429AF531900EE18F4 /* Apple iTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Apple iTunes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		658617C729AF531900EE18F4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		658617C929AF531900EE18F4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,9 +57,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6505A02F29B7542A00D156BA /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				6505A03029B7544300D156BA /* DetailInteractor.swift */,
+				6505A03229B7545600D156BA /* DetailPresenter.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		6505A03429B76E9300D156BA /* Apple iTunes Tests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Apple iTunes Tests";
+			sourceTree = "<group>";
+		};
 		658617BB29AF531900EE18F4 = {
 			isa = PBXGroup;
 			children = (
+				6505A03429B76E9300D156BA /* Apple iTunes Tests */,
 				658617C629AF531900EE18F4 /* Apple iTunes */,
 				658617C529AF531900EE18F4 /* Products */,
 			);
@@ -72,6 +93,7 @@
 		658617C629AF531900EE18F4 /* Apple iTunes */ = {
 			isa = PBXGroup;
 			children = (
+				6505A02F29B7542A00D156BA /* Detail */,
 				6586181D29B525FD00EE18F4 /* Main */,
 				658617C729AF531900EE18F4 /* AppDelegate.swift */,
 				6586182629B5277E00EE18F4 /* AppCoordinator.swift */,
@@ -173,12 +195,14 @@
 				658617CC29AF531900EE18F4 /* ViewController.swift in Sources */,
 				658617E629B4D82100EE18F4 /* APIClient.swift in Sources */,
 				658617C829AF531900EE18F4 /* AppDelegate.swift in Sources */,
+				6505A03129B7544300D156BA /* DetailInteractor.swift in Sources */,
 				658617E229AF9DF200EE18F4 /* DetailViewController.swift in Sources */,
 				6586182329B526F000EE18F4 /* MainPresenter.swift in Sources */,
 				6586182129B5263F00EE18F4 /* MainInteractor.swift in Sources */,
 				6586182729B5277E00EE18F4 /* AppCoordinator.swift in Sources */,
 				658617E429B4D76F00EE18F4 /* Albums.swift in Sources */,
 				658617CA29AF531900EE18F4 /* SceneDelegate.swift in Sources */,
+				6505A03329B7545600D156BA /* DetailPresenter.swift in Sources */,
 				6586182529B5273100EE18F4 /* Worker.swift in Sources */,
 				658617DC29AF72F000EE18F4 /* Tracks.swift in Sources */,
 			);

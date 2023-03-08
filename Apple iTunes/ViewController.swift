@@ -28,18 +28,33 @@ class ViewController: UITableViewController, ViewControllerLogic {
         
         searchiTunes()
     }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
-    }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+
+    init(interactor: MainInteractor, presenter: MainPresenter, worker: Worker, coordinator: AppCoordinator) {
+        super.init(style: .plain)
+        self.interactor = interactor
+        self.coordinator = coordinator
+        interactor.presenter = presenter
+        interactor.worker = worker
+        presenter.viewController = self
+        coordinator.viewController = self
+    }
     
-    private func setup() {
+    func setup(interactor: MainInteractor, presenter: MainPresenter, worker: Worker, coordinator: AppCoordinator) {
+        let viewController = self
+        viewController.interactor = interactor
+        viewController.coordinator = coordinator
+        interactor.presenter = presenter
+        interactor.worker = worker
+        presenter.viewController = viewController
+        coordinator.viewController = viewController
+    }
+    
+    func setup() {
         let viewController = self
         let interactor = MainInteractor()
         let presenter = MainPresenter()
